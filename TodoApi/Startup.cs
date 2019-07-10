@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using TodoApi.Models;
 
 namespace TodoApi
@@ -56,7 +57,14 @@ namespace TodoApi
             app.UseDefaultFiles();
             app.UseStaticFiles();
             //app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
+
+
+            //!!!!!!!!!!!!!!!!!!!
+            //!!!  ON PURPOSE
+            //!!!!!!!!!!!!!!!!!!!
+            // Wait 3 seconds to demonstrate the readinessProbe
+            Task.Delay(3000).Wait();
         }
         #endregion
     }

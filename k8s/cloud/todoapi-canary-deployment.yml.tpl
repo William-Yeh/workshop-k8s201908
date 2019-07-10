@@ -1,33 +1,15 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: todoapi
-  labels:
-    app: todo
-    tier: backend
-spec:
-  type: LoadBalancer
-  loadBalancerIP: TODOAPI_IP_ADDR  # external IP (ephemeral or static)
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-  selector:
-    app: todo
-    tier: backend
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todoapi
+  name: todoapi-canary
   labels:
     app: todo
     tier: backend
+    track: canary
 
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: todo
@@ -47,9 +29,17 @@ spec:
       containers:
         - name: todoapi
           image: gcr.io/PROJECT_ID/todoapi
-          #image: gcr.io/PROJECT_ID/todoapi:6.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+
+#--- Do we need readinessProbe?  Try it yourself! ---
+#          readinessProbe:
+#            httpGet:
+#              path: /api/health
+#              port: 80
+#            #initialDelaySeconds: 20
+#            #periodSeconds: 10
+
       #dnsPolicy: ClusterFirst
       #restartPolicy: Always

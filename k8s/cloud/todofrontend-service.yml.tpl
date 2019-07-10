@@ -25,6 +25,10 @@ metadata:
   labels:
     app: todo
     tier: frontend
+<<<<<<< HEAD
+=======
+    track: stable
+>>>>>>> new7
 
 spec:
   replicas: 3
